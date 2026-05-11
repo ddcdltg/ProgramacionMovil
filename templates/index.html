@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+    <title>Survival Guide: El reto Móvil</title>
+
+    <!-- FUENTE -->
+    <link rel="preconnect"
+          href="https://fonts.googleapis.com">
+    <link rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+          rel="stylesheet">
+
+    <!-- CSS -->
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/styles.css') }}">
+
+</head>
+
+<body>
+
+    <div class="container">
+
+        <!-- HEADER -->
+        <div class="header">
+
+            <h1>Survival Guide: El reto Móvil</h1>
+
+            <p>
+                Bienvenido a este nuevo reto: La materia de Programación Móvil
+                <br>
+                Aquí tienes una guía de información importante sobre la materia, además de preguntas para asegurar que recordarás todo.
+                <br>
+                Si respondes algo mal, tendrás que volver a empezar.
+                <br>
+                ¡Mucho éxito!
+            </p>
+
+        </div>
+
+        <!-- LISTA DE SECCIONES -->
+        {% set secciones = ['camara_reglas', 'oraculo_notas', 'skills', 'linea_tiempo'] %}
+
+        <!-- GENERAR TODAS LAS SECCIONES -->
+        {% for seccion in secciones %}
+
+        <div class="section
+            {% if not loop.first and not progreso[secciones[loop.index0 - 1]].completado %}
+                locked
+            {% endif %}"
+
+            id="section-{{ seccion }}">
+
+            <!-- TITULO -->
+            <h2 class="section-title">
+
+                {{ contenido[seccion].titulo }}
+
+                {% if progreso[seccion].completado %}
+
+                <span class="completado-badge">
+                    ╰(*°▽°*)╯ Completado
+                </span>
+
+                {% endif %}
+
+            </h2>
+
+            <!-- CONTENIDO -->
+            <div class="contenido">
+
+                {{ contenido[seccion].contenido | safe }}
+
+            </div>
+
+            <!-- PREGUNTAS -->
+            <div class="preguntas">
+
+                <h3 class="subtitulo-preguntas">
+                    Prueba tu conocimiento:
+                </h3>
+
+                {% for i in range(contenido[seccion].preguntas | length) %}
+
+                <div class="pregunta"
+                     id="pregunta-{{ seccion }}-{{ i }}">
+
+                    <h4>
+
+                        Pregunta {{ i + 1 }}:
+                        {{ contenido[seccion].preguntas[i].pregunta }}
+
+                    </h4>
+
+                    <div class="opciones">
+
+                        {% for j in range(contenido[seccion].preguntas[i].opciones | length) %}
+
+                        <div class="opcion"
+                             onclick="verificarRespuesta('{{ seccion }}', {{ i }}, {{ j }}, this)">
+
+                            {{ contenido[seccion].preguntas[i].opciones[j] }}
+
+                        </div>
+
+                        {% endfor %}
+
+                    </div>
+
+                    <div class="resultado"
+                         id="resultado-{{ seccion }}-{{ i }}"
+                         style="display:none;">
+                    </div>
+
+                </div>
+
+                {% endfor %}
+
+                <!-- PROGRESO -->
+                <div class="progreso-info"
+                     id="progreso-{{ seccion }}">
+
+                    Respuestas correctas:
+
+                    <span id="correctas-{{ seccion }}">
+
+                        {{ progreso[seccion].preguntas_correctas }}
+
+                    </span>/2
+
+                </div>
+
+            </div>
+
+            <!-- COMPROMISO -->
+            <div class="compromiso-container"
+                 id="compromiso-{{ seccion }}">
+
+                <h3 class="titulo-compromiso">
+                    ¡Excelente! Has completado esta sección
+                </h3>
+
+                <label class="checkbox-container">
+
+                    <input type="checkbox"
+                           id="check-{{ seccion }}"
+                           onchange="marcarCompromiso('{{ seccion }}')">
+
+                    <span>
+                        Confirmo que entendí esta sección
+                    </span>
+
+                </label>
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+        <!-- BOTÓN -->
+        <button class="btn-reiniciar"
+                onclick="reiniciar()">
+
+            Reiniciar Aventura
+
+        </button>
+
+    </div>
+
+    <!-- JAVASCRIPT -->
+    <script>
+
+        // Verificar respuestas
+        async function verificarRespuesta(seccion, indicePregunta, respuesta, elemento) {
+
+            const opciones =
+                elemento.parentElement.querySelectorAll('.opcion');
+
+            opciones.forEach(op =>
+                op.classList.add('disabled')
+            );
+
+            try {
+
+                const response =
+                    await fetch('/verificar_respuesta', {
+
+                    method: 'POST',
+
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+
+                    body: JSON.stringify({
+                        seccion: seccion,
+                        indice_pregunta: indicePregunta,
+                        respuesta: respuesta
+                    })
+
+                });
+
+                const data = await response.json();
+
+                const resultadoDiv =
+                    document.getElementById(
+                        `resultado-${seccion}-${indicePregunta}`
+                    );
+
+                const correctasSpan =
+                    document.getElementById(
+                        `correctas-${seccion}`
+                    );
+
+                if (data.correcta) {
+
+                    elemento.classList.add('correcta');
+
+                    resultadoDiv.className =
+                        'resultado correcto';
+
+                    resultadoDiv.textContent =
+                        '✓ ¡Correcto!';
+
+                    resultadoDiv.style.display =
+                        'block';
+
+                    correctasSpan.textContent =
+                        data.preguntas_correctas;
+
+                    // Ocultar contenido después de 1 correcta
+                    if (data.preguntas_correctas === 1) {
+
+                        const contenidoDiv =
+                            document.querySelector(
+                                `#section-${seccion} .contenido`
+                            );
+
+                        if (contenidoDiv) {
+
+                            contenidoDiv.classList.add('oculto');
+                        }
+                    }
+
+                    // Mostrar compromiso
+                    if (data.preguntas_correctas >= 2) {
+
+                        document
+                            .getElementById(`compromiso-${seccion}`)
+                            .classList.add('show');
+                    }
+
+                } else {
+
+                    elemento.classList.add('incorrecta');
+
+                    resultadoDiv.className =
+                        'resultado incorrecto';
+
+                    resultadoDiv.textContent =
+                        '✗ Incorrecto.';
+
+                    resultadoDiv.style.display =
+                        'block';
+                }
+
+            } catch (error) {
+
+                console.error(error);
+
+                alert('Hubo un error');
+            }
+        }
+
+        // Marcar compromiso
+        async function marcarCompromiso(seccion) {
+
+            const checkbox =
+                document.getElementById(`check-${seccion}`);
+
+            if (checkbox.checked) {
+
+                try {
+
+                    const response =
+                        await fetch('/marcar_compromiso', {
+
+                        method: 'POST',
+
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+
+                        body: JSON.stringify({
+                            seccion: seccion
+                        })
+
+                    });
+
+                    const data = await response.json();
+
+                    if (data.exito) {
+
+                        const titulo =
+                            document.querySelector(
+                                `#section-${seccion} .section-title`
+                            );
+
+                        if (!titulo.querySelector('.completado-badge')) {
+
+                            const badge =
+                                document.createElement('span');
+
+                            badge.className =
+                                'completado-badge';
+
+                            badge.textContent =
+                                'Completado';
+
+                            titulo.appendChild(badge);
+                        }
+
+                        // Desbloquear siguiente sección
+                        const secciones = [
+                            'camara_reglas',
+                            'oraculo_notas',
+                            'skills',
+                            'linea_tiempo'
+                        ];
+
+                        const indice =
+                            secciones.indexOf(seccion);
+
+                        if (indice < secciones.length - 1) {
+
+                            const siguiente =
+                                secciones[indice + 1];
+
+                            document
+                                .getElementById(`section-${siguiente}`)
+                                .classList.remove('locked');
+
+                        } else {
+
+                            alert('¡Has completado toda la aventura!');
+                        }
+                    }
+
+                } catch (error) {
+
+                    console.error(error);
+
+                    alert('Hubo un error');
+                }
+            }
+        }
+
+        // Reiniciar
+        async function reiniciar() {
+
+            if (confirm('¿Seguro que quieres reiniciar?')) {
+
+                try {
+
+                    await fetch('/reiniciar');
+
+                    location.reload();
+
+                } catch (error) {
+
+                    console.error(error);
+
+                    alert('Hubo un error');
+                }
+            }
+        }
+
+        // Cargar progreso guardado
+        window.addEventListener('DOMContentLoaded', function () {
+
+            const secciones = [
+                'camara_reglas',
+                'oraculo_notas',
+                'skills',
+                'linea_tiempo'
+            ];
+
+            secciones.forEach(seccion => {
+
+                const correctas =
+                    parseInt(
+                        document.getElementById(
+                            `correctas-${seccion}`
+                        ).textContent
+                    );
+
+                if (correctas >= 2) {
+
+                    document
+                        .getElementById(`compromiso-${seccion}`)
+                        .classList.add('show');
+                }
+
+                if (correctas >= 1) {
+
+                    const contenidoDiv =
+                        document.querySelector(
+                            `#section-${seccion} .contenido`
+                        );
+
+                    if (contenidoDiv) {
+
+                        contenidoDiv.classList.add('oculto');
+                    }
+                }
+            });
+        });
+
+    </script>
+
+</body>
+
+</html>

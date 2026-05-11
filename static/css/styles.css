@@ -1,0 +1,373 @@
+/* 
+   RESET GENERAL
+ */
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+/* 
+   BODY
+ */
+body{
+    font-family:'Poppins', sans-serif;
+    background:#ffdce9;
+    min-height:100vh;
+    padding:40px;
+    color:#555;
+}
+
+/* 
+   CONTENEDOR
+ */
+.container{
+    max-width:1200px;
+    margin:auto;
+}
+
+/* 
+   HEADER
+ */
+.header{
+    text-align:center;
+    background:#f6eef2;
+    padding:35px;
+    border-radius:25px;
+    margin-bottom:35px;
+    border:4px solid #f490ba;
+    box-shadow:0 8px 20px rgba(0,0,0,0.08);
+}
+
+.header h1{
+    color:#2d2d2d;
+    font-size:2.8em;
+    font-weight:700;
+    margin-bottom:15px;
+}
+
+.header p{
+    color:#666;
+    line-height:1.8;
+    font-size:1.05em;
+    font-weight:400;
+}
+
+/* 
+   SECCIONES
+ */
+.section{
+    background:#fffdf7;
+    border-radius:25px;
+    padding:45px;
+    margin-bottom:35px;
+    border:4px solid #ffe7a8;
+    box-shadow:0 8px 18px rgba(0,0,0,0.06);
+    transition:0.4s;
+    position:relative;
+}
+
+.section:hover{
+    transform:translateY(-3px);
+}
+
+/* 
+   BLOQUEADO
+ */
+.section.locked{
+    filter:blur(5px);
+    pointer-events:none;
+    opacity:0.7;
+}
+
+.section.locked::before{
+    content:"🔒";
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    font-size:65px;
+    z-index:5;
+}
+
+/* 
+   TITULOS
+ */
+.section-title{
+    color:#2d2d2d;
+    font-size:2em;
+    font-weight:600;
+    margin-bottom:20px;
+}
+
+/* 
+   CONTENIDO
+ */
+.contenido{
+    background:#fff;
+    padding:20px;
+    border-radius:18px;
+    margin-bottom:25px;
+    line-height:1.8;
+}
+
+.contenido.oculto{
+    display:none;
+}
+
+.contenido h3{
+    color:#9a3563;
+    margin-bottom:12px;
+}
+
+.contenido ul{
+    margin-left:20px;
+    margin-top:10px;
+}
+
+.contenido li{
+    margin-bottom:10px;
+}
+
+.contenido table{
+    width:100%;
+    margin-top:15px;
+    border-collapse:collapse;
+    overflow:hidden;
+    border-radius:15px;
+}
+
+.contenido th{
+    background:#ffd6e7;
+    color:#2d2d2d;
+}
+
+.contenido th,
+.contenido td{
+    padding:12px;
+    border:1px solid #ffe7a8;
+}
+
+/* 
+   PREGUNTAS
+ */
+.preguntas{
+    background:#fff5fa;
+    padding:25px;
+    border-radius:20px;
+}
+
+/* 
+   SUBTITULO
+ */
+.subtitulo-preguntas{
+    margin-bottom:20px;
+    color:#9a3563;
+    font-size:1.3em;
+    font-weight:600;
+}
+
+/* 
+   TARJETA PREGUNTA
+ */
+.pregunta{
+    background:white;
+    padding:20px;
+    border-radius:18px;
+    margin-bottom:20px;
+    border:2px solid #ffe3ef;
+}
+
+.pregunta h4{
+    color:#2d2d2d;
+    margin-bottom:15px;
+    line-height:1.5;
+    font-weight:500;
+}
+
+/* 
+   OPCIONES
+ */
+.opciones{
+    display:grid;
+    gap:12px;
+}
+
+.opcion{
+    background:#fff7cc;
+    border:2px solid transparent;
+    padding:14px;
+    border-radius:15px;
+    cursor:pointer;
+    transition:0.3s;
+    font-weight:500;
+}
+
+.opcion:hover{
+    background:#ffe8f3;
+    border-color:#ffb6d5;
+    transform:scale(1.02);
+}
+
+/* 
+   CORRECTA
+ */
+.opcion.correcta{
+    background:#d8ffd8;
+    border-color:#72d572;
+}
+
+/* 
+   INCORRECTA
+ */
+.opcion.incorrecta{
+    background:#ffd9d9;
+    border-color:#ff7b7b;
+}
+
+/* 
+   DESACTIVADA
+ */
+.opcion.disabled{
+    pointer-events:none;
+    opacity:0.7;
+}
+
+/* 
+   RESULTADO
+ */
+.resultado{
+    margin-top:15px;
+    padding:12px;
+    border-radius:12px;
+    text-align:center;
+    font-weight:600;
+}
+
+.resultado.correcto{
+    background:#d8ffd8;
+    color:#2c6b2c;
+}
+
+.resultado.incorrecto{
+    background:#ffdede;
+    color:#8a2f2f;
+}
+
+/* 
+   PROGRESO
+ */
+.progreso-info{
+    margin-top:15px;
+    text-align:center;
+    background:white;
+    padding:12px;
+    border-radius:15px;
+    font-weight:600;
+    color:#444;
+}
+
+/* 
+   COMPROMISO
+ */
+.compromiso-container{
+    background:#fff2bd;
+    padding:20px;
+    border-radius:20px;
+    margin-top:20px;
+    display:none;
+}
+
+.compromiso-container.show{
+    display:block;
+}
+
+/* 
+   TITULO COMPROMISO
+ */
+.titulo-compromiso{
+    margin-bottom:15px;
+    color:#856404;
+    font-weight:600;
+}
+
+/* 
+   CHECKBOX
+ */
+.checkbox-container{
+    display:flex;
+    align-items:center;
+    gap:15px;
+    background:white;
+    padding:15px;
+    border-radius:15px;
+    margin-top:10px;
+}
+
+.checkbox-container input{
+    width:22px;
+    height:22px;
+}
+
+/* 
+   COMPLETADO
+ */
+.completado-badge{
+    background:#ffb6d5;
+    color:#2d2d2d;
+    padding:7px 14px;
+    border-radius:20px;
+    font-size:0.8em;
+    margin-left:10px;
+    font-weight:600;
+}
+
+/* 
+   BOTON REINICIAR
+ */
+.btn-reiniciar{
+    position:fixed;
+    right:20px;
+    bottom:20px;
+    border:none;
+    background:#ff9ec7;
+    color:#2d2d2d;
+    padding:15px 22px;
+    border-radius:50px;
+    cursor:pointer;
+    font-weight:600;
+    box-shadow:0 5px 15px rgba(0,0,0,0.1);
+    transition:0.3s;
+}
+
+.btn-reiniciar:hover{
+    transform:scale(1.05);
+    background:#ff89ba;
+}
+
+/* 
+   RESPONSIVE
+ */
+@media(max-width:768px){
+
+    body{
+        padding:15px;
+    }
+
+    .header{
+        padding:25px;
+    }
+
+    .header h1{
+        font-size:2em;
+    }
+
+    .section{
+        padding:20px;
+    }
+
+    .section-title{
+        font-size:1.6em;
+    }
+
+}
