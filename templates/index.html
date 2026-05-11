@@ -74,9 +74,128 @@
             <!-- CONTENIDO -->
             <div class="contenido">
 
-                {{ contenido[seccion].contenido | safe }}
+            {% if seccion == 'camara_reglas' %}
 
-            </div>
+            <h3>Normas de Convivencia y Asistencia</h3>
+
+            <ul>
+
+                <li>
+                    <strong>Asistencia:</strong>
+                    Mínimo 80% de asistencia y 80% de trabajos en clase
+                </li>
+
+                <li>
+                    <strong>Puntualidad:</strong>
+                    10 minutos de tolerancia máximo.
+                </li>
+
+                <li>
+                    <strong>Faltas a clase:</strong>
+                    Justificadas mediante correo institucional.
+                </li>
+
+                <li>
+                    <strong>Entregas:</strong>
+                    No se aceptan tareas fuera de tiempo.
+                </li>
+
+                <li>
+                    <strong>Honestidad académica:</strong>
+                    El plagio reprueba la materia.
+                </li>
+
+            </ul>
+
+            {% elif seccion == 'oraculo_notas' %}
+
+            <h3>Porcentajes de Evaluación</h3>
+
+            <ul>
+
+                <li>
+                    <strong>Evidencia de conocimiento:</strong>
+                    Parcial 1 y 2: 40% | Parcial 3: 10%
+                </li>
+
+                <li>
+                    <strong>Evidencia de desempeño:</strong>
+                    Parcial 1 y 2: 20% | Parcial 3: 10%
+                </li>
+
+                <li>
+                    <strong>Evidencia de producto:</strong>
+                    30% para los 3 parciales
+                </li>
+
+                <li>
+                    <strong>Proyecto Integrador:</strong>
+                    Parcial 3: 50%
+                </li>
+
+            </ul>
+
+            {% elif seccion == 'skills' %}
+
+            <h3>Objetivo General</h3>
+
+            <p>
+                Desarrollará aplicaciones móviles mediante lenguajes
+                de programación y herramientas móviles.
+            </p>
+
+            <h3>Objetivo Particular</h3>
+
+            <ul>
+
+                <li>
+                    Soluciones multiplataforma usando programación
+                    orientada a objetos, frameworks y bases de datos.
+                </li>
+
+            </ul>
+
+            {% elif seccion == 'linea_tiempo' %}
+
+            <h3>Fechas Clave del Cuatrimestre</h3>
+
+            <table style="width:100%; border-collapse: collapse;">
+
+                <tr>
+                    <th>Fecha</th>
+                    <th>Evento</th>
+                </tr>
+
+                <tr>
+                    <td>01 de junio del 2026</td>
+                    <td>Primer exámen parcial</td>
+                </tr>
+
+                <tr>
+                    <td>06 de julio del 2026</td>
+                    <td>Segundo exámen parcial</td>
+                </tr>
+
+                <tr>
+                    <td>10 de agosto del 2026</td>
+                    <td>Tercer exámen parcial</td>
+                </tr>
+
+                <tr>
+                    <td>17 de agosto del 2026</td>
+                    <td>Exámen FINAL</td>
+                </tr>
+
+                <tr>
+                    <td>20 de agosto del 2026</td>
+                    <td>Fin del cuatrimestre</td>
+                </tr>
+
+            </table>
+
+            {% endif %}
+
+        </div>
 
             <!-- PREGUNTAS -->
             <div class="preguntas">
